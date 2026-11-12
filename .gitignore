@@ -10,6 +10,10 @@ node_modules/
 /playwright-report/*
 !/playwright-report/.gitkeep
 /blob-report/
+
+# Per-test run output (only .gitkeep may be tracked)
+tests/**/output/*
+!tests/**/output/.gitkeep
 /playwright/.cache/
 /playwright/.auth/
 
