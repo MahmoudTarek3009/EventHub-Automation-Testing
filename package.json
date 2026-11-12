@@ -6,7 +6,12 @@
   "directories": {
     "doc": "docs"
   },
-  "scripts": {},
+  "scripts": {
+    "lint": "eslint tests pages utils --no-error-on-unmatched-pattern",
+    "lint:fix": "eslint tests pages utils --no-error-on-unmatched-pattern --fix",
+    "check:artifacts": "node scripts/check-artifacts.js",
+    "prepare": "husky"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MahmoudTarek3009/EventHub-Automation-Testing.git"
@@ -19,8 +24,21 @@
     "url": "https://github.com/MahmoudTarek3009/EventHub-Automation-Testing/issues"
   },
   "homepage": "https://github.com/MahmoudTarek3009/EventHub-Automation-Testing#readme",
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
   "devDependencies": {
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.65.0",
-    "@types/node": "^26.6.6"
+    "@types/node": "^26.6.6",
+    "eslint": "^10.14.0",
+    "eslint-plugin-playwright": "^2.12.2",
+    "eslint-plugin-unicorn": "^79.0.0",
+    "globals": "^17.14.0",
+    "husky": "^9.1.7"
   }
 }

@@ -1,0 +1,2 @@
+node scripts/check-artifacts.js --pushed || exit 1
+npm run lint
