@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+
+# Playwright output (folders are tracked via .gitkeep, contents are not)
+/test-results/*
+!/test-results/.gitkeep
+/playwright-report/*
+!/playwright-report/.gitkeep
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+
+# Logs
+*.log
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
