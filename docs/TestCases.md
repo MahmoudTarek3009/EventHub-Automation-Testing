@@ -50,7 +50,7 @@ The two end-to-end tests are the exception. Each is one journey by design.
 | API-11 | AC3 | **A booking can be fetched by id**<br>Technique: use-case testing | P2 | • Create a booking<br>• Get the booking by id | • 201<br>• The same booking (same id, reference, quantity and total) |
 | API-12 | AC4 | **Cancel a booking**<br>Technique: state transition testing | P1 | • Create a booking<br>• Cancel it<br>• Get it | • 201<br>• 200 `Booking cancelled`<br>• 404 |
 | API-13 | AC4 | **Cancel returns the seats**<br>Technique: state transition testing | P1 | • Book 2 tickets on World Tech Summit<br>• Cancel the booking<br>• Get the event | • 201<br>• 200 `Booking cancelled`<br>• `availableSeats` is 8 |
-| API-14 | AC5 | **A token is required**<br>Technique: authorization testing (negative) | P1 | • Create a booking without a token | • 401 `Unauthorized` (docs show it as public, Q13) |
+| API-14 | AC5 | **A token is required**<br>Technique: authorization testing (negative) | P1 | • Create a booking without a token | • 401 `Unauthorized` (docs show it as public) |
 
 ## UI tests
 
@@ -122,18 +122,15 @@ A framework fixture registers a user and signs in once per worker: through the A
 
 | Item | Why | Story review row |
 |---|---|---|
-| Booking or cancelling a booking for a past event | Rule not defined. Both succeed today. | 7, 11 |
+| Booking or cancelling a booking for a past event | Rule not defined. Both succeed today. | 7, 10 |
 | Booking twice with identical details | Not known whether a repeat is valid. | 8 |
 | Zero tickets, and invalid name, email or phone | Same validation as API-07 and UI-07. To add with more time. | 3 |
 | Another user reading or cancelling a booking | A security check beyond the basic flow. To add with more time. | |
 | Overselling under parallel bookings | A known bug. To report, then add as an expected-fail test. | |
 | Response time limits | The story defines none, and the shared server varies from about 0.3 to 5 seconds. A pass or fail limit would fail at random. This belongs in a load tool. | |
-| CORS and caching headers | CORS is enforced by browsers only, and the API sends no caching headers. The story has no requirement for either. | |
-| UI message for a sold-out event | Not defined. The API side is covered by API-08. | 6 |
 | Phone formats beyond 10 digits (`+91 …`, spaces) | The accepted format is not defined. | 3 |
 | Currency and rounding | Not defined. The seeded prices are whole numbers, so decimal prices are not checked. | 9 |
 | Confirmation email | Not defined, and there is no mailbox to read. | 2 |
-| Server errors on bad input (malformed JSON, `DELETE /bookings/abc`, a 500-character name) | A defect, not part of the story. To be reported. | 3 |
 | Seat count on the event page not updating without a reload | A defect, not part of the story. To be reported. UI-09 reloads the page. | |
 | Paging and filters of the booking list, unknown event, unknown booking | Generic behaviour, low risk. | |
 | Creating events and the refund check | Not part of US-114. | |
