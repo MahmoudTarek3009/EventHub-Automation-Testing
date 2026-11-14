@@ -6,7 +6,7 @@ Playwright (JavaScript, `@playwright/test`) UI and API test suite. Follow these 
 
 | Folder | Purpose |
 |---|---|
-| `tests/` | Test scripts only: readable steps, no locators, no Playwright plumbing. Sub-folders `ui/`, `api/`, `e2e/` |
+| `tests/` | Test scripts only: readable steps, no locators, no Playwright plumbing. Sub-folders `ui/`, `api/` and `e2e/` (the end-to-end tests are split into `e2e/ui/` and `e2e/api/`) |
 | `tests/test-data/` | Static test data files |
 | `src/pages/` | Page objects: locators and user actions (`signIn`, `search`). Locators live only here |
 | `src/fixtures/` | Playwright fixtures that provide page objects and API clients to tests |
@@ -28,6 +28,12 @@ Playwright (JavaScript, `@playwright/test`) UI and API test suite. Follow these 
 - Expose user-level actions (`signIn(username, password)`), not raw clicks. Actions return nothing or the next page object.
 - Do not put assertions about test intent in page objects. Small readiness checks are fine.
 - Before adding a locator, check for an existing one in `src/pages/`.
+- Page objects and API objects start with `// @ts-check` and the Playwright type they use (`Page` or `APIRequestContext`, through a `@typedef`). Give every method parameter a JSDoc type, for example `/** @param {string} email */`, so editors show the Playwright types and strict TypeScript raises no warnings.
+
+## API objects (`src/utils/api/`)
+
+- One class per resource, not per endpoint: `AuthApi`, `EventsApi`, `BookingsApi`, grouped by an `ApiManager`.
+- A method sends one request and returns the raw response. Do not put assertions in an API object, so a test can check any status. The test does the asserting.
 
 ## Locators
 
@@ -54,6 +60,7 @@ Never use XPath, index-based selectors (`nth`, `first`, `last`) unless order is 
 - Never hard-code credentials, tokens, API keys or user names in code. Read them from `process.env`. Add the key name to `.env.example` with an empty value. Never put real values in `.env.example`.
 - `.env` is local only and never committed.
 - Use `baseURL` from `playwright.config.js` and relative paths (`page.goto('/login')`). Do not hard-code environment URLs in tests.
+- The UI and the API are on different hosts, so each Playwright project (`ui`, `api`, `e2e-ui`, `e2e-api`) has its own `baseURL` in the config. `.env` only overrides the defaults there.
 - Tests create the data they need and clean it up. Do not rely on data left by earlier runs.
 
 ## Naming
