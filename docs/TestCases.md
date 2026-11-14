@@ -41,9 +41,9 @@ The two end-to-end tests are the exception. Each is one journey by design.
 | API-02 | Prerequisite | **Register with an email already in use**<br>Technique: negative testing | P2 | • Register a new user<br>• Register again with the same email | • 201<br>• 400 `Email already registered` |
 | API-03 | Prerequisite | **Log in with valid credentials**<br>Technique: use-case testing (happy path) | P1 | • Log in with the email and password of a registered user | • 200 with a token and the user's email |
 | API-04 | Prerequisite | **Log in with a wrong password**<br>Technique: equivalence partitioning (invalid credentials) | P2 | • Log in with a registered email and a wrong password | • 400 `Invalid email or password` |
-| API-05 | AC1, AC5 | **Create a booking with valid data**<br>Technique: use-case testing (happy path) | P1 | • Book 2 tickets on Hollywood Monsoon Night with a valid name, email and phone | • 201 `Booking confirmed!`<br>• Status `confirmed`, quantity 2, customer details as sent<br>• A booking reference is returned |
+| API-05 | AC1, AC5 | **Create a booking with valid data**<br>Technique: use-case testing (happy path) | P1 | • Book 2 tickets on Hollywood Monsoon Night with a valid name, email and phone | • 201 `Booking confirmed!`<br>• Status `confirmed`, quantity 2, customer details as sent<br>• A booking reference is returned<br>• The response is JSON and has the expected fields and types |
 | API-06 | AC2 | **Total price is price times quantity**<br>Technique: equivalence partitioning | P1 | • Book 3 tickets on Hollywood Monsoon Night (price 2,500) | • `totalPrice` is 7500 (returned as text, so compare as a number) |
-| API-07 | AC1 | **Quantity above the maximum is rejected**<br>Technique: boundary value analysis, negative testing | P2 | • Book 11 tickets | • 400 `Quantity must be an integer between 1 and 10` |
+| API-07 | AC1 | **Quantity above the maximum is rejected**<br>Technique: boundary value analysis, negative testing | P2 | • Book 11 tickets | • 400 with a JSON error `Validation failed`<br>• The error names the field `quantity` with the message `Quantity must be an integer between 1 and 10` |
 | API-08 | AC1 | **Seats cannot be exceeded**<br>Technique: boundary value analysis (capacity) | P1 | • Book 9 tickets on World Tech Summit (8 seats) | • 400 `Only 8 seat(s) available, but 9 requested` |
 | API-09 | AC1 | **A booking takes its seats**<br>Technique: state-based testing | P1 | • Book 2 tickets on World Tech Summit<br>• Get the event | • 201<br>• `availableSeats` is 6 |
 | API-10 | AC3 | **A new booking is listed**<br>Technique: use-case testing (state verification) | P1 | • Create a booking<br>• List bookings | • 201<br>• The booking is first in the list, with status `confirmed` |
@@ -127,6 +127,8 @@ A framework fixture registers a user and signs in once per worker: through the A
 | Zero tickets, and invalid name, email or phone | Same validation as API-07 and UI-07. To add with more time. | 3 |
 | Another user reading or cancelling a booking | A security check beyond the basic flow. To add with more time. | |
 | Overselling under parallel bookings | A known bug. To report, then add as an expected-fail test. | |
+| Response time limits | The story defines none, and the shared server varies from about 0.3 to 5 seconds. A pass or fail limit would fail at random. This belongs in a load tool. | |
+| CORS and caching headers | CORS is enforced by browsers only, and the API sends no caching headers. The story has no requirement for either. | |
 | UI message for a sold-out event | Not defined. The API side is covered by API-08. | 6 |
 | Phone formats beyond 10 digits (`+91 …`, spaces) | The accepted format is not defined. | 3 |
 | Currency and rounding | Not defined. The seeded prices are whole numbers, so decimal prices are not checked. | 9 |
