@@ -5,7 +5,7 @@ description: "Use when finding, choosing, verifying, or fixing Playwright locato
 
 # Locator Finder
 
-Finds stable Playwright locators and verifies them against the live page. Locators are written only to page objects in `pages/`, never to test scripts in `tests/`.
+Finds stable Playwright locators and verifies them against the live page. Locators are written only to page objects in `src/pages/`, never to test scripts in `tests/`.
 
 ## Locator priority
 
@@ -26,7 +26,7 @@ Never use:
 
 ## Procedure
 
-1. Get the target URL and the element or action. If the page needs a login, ask the user for the steps or use the existing `signIn` action in `pages/`.
+1. Get the target URL and the element or action. If the page needs a login, ask the user for the steps or use the existing `signIn` action in `src/pages/`.
 2. Dump the accessibility tree:
    ```
    node .github/skills/locator-finder/scripts/locator-tool.js snapshot <url>
@@ -38,7 +38,7 @@ Never use:
    node .github/skills/locator-finder/scripts/locator-tool.js check <url> "page.getByRole('button', { name: 'Sign in' })"
    ```
    The result must be `count: 1`. If it is 0 or more than 1, refine the locator (more specific name, `exact: true`, or scope to a parent with `getByRole('form')` / `locator('section')`) and check again.
-5. Add the locator to the matching page object in `pages/` as a property or getter, named for what it is (`signInButton`, `searchInput`). Reuse an existing locator if one already matches.
+5. Add the locator to the matching page object in `src/pages/` as a property or getter, named for what it is (`signInButton`, `searchInput`). Reuse an existing locator if one already matches.
 6. Report the locator, the verification result, and the file it was added to.
 
 ## Gotchas

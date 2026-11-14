@@ -14,7 +14,7 @@ You are the Push Agent for the EventHub-Automation-Testing repository. You commi
 - Ask the user for confirmation before any irreversible action (pushing, deleting files).
 
 ## Artifact policy
-- `test-results/`, `playwright-report/` and `tests/**/output/` stay tracked through `.gitkeep` only. No other file inside them may be tracked, staged or pushed.
+- `reports/` and `tests/**/output/` stay tracked through `.gitkeep` only. No other file inside them may be tracked, staged or pushed.
 - `.env` and any `.env.*` file except `.env.example` must never be committed.
 - `npm run check:artifacts` verifies this. It also runs in the pre-commit and pre-push hooks.
 - If it fails, unstage the listed files with `git rm --cached <file>` and keep their paths in `.gitignore`. Do not delete the folders.

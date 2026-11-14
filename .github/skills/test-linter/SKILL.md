@@ -5,17 +5,17 @@ description: "Use when linting or checking Playwright test scripts, page objects
 
 # Test Linter
 
-Runs the suite quality gates and fixes the findings. The rules live in `eslint.config.mjs`. Change rules there, never in this file.
+Runs the suite quality gates and fixes the findings. The rules live in `quality-gate/eslint.config.mjs`. Change rules there, never in this file.
 
 ## Rules enforced
 
 | Rule | Applies to | Fix |
 |---|---|---|
-| No raw locators (`locator`, `getBy*`, `frameLocator`) | `tests/` | Move the locator into a page object in `pages/` and call the action or property |
-| No hard-coded waits (`waitForTimeout`, `sleep`, `delay`, `setTimeout`) | `tests/`, `pages/`, `utils/` | Use auto-waiting or a web-first assertion such as `expect(locator).toBeVisible()` |
+| No raw locators (`locator`, `getBy*`, `frameLocator`) | `tests/` | Move the locator into a page object in `src/pages/` and call the action or property |
+| No hard-coded waits (`waitForTimeout`, `sleep`, `delay`, `setTimeout`) | `tests/`, `src/` | Use auto-waiting or a web-first assertion such as `expect(locator).toBeVisible()` |
 | No hard-coded credentials (names like `password`, `username`, `token`, `secret`, `apiKey` assigned a string literal, or literals passed to `signIn` / `login`) | all linted files | Read from `process.env` and add the key to `.env.example` |
-| Naming | all linted files | File names in `tests/`, `pages/` and `utils/` use PascalCase (`LoginPage.js`, `SearchFlow.spec.js`), identifiers use camelCase, classes use PascalCase |
-| Playwright best practice (`no-element-handle`, `no-force-option`, `no-conditional-in-test`, `prefer-web-first-assertions`, `missing-playwright-await`) | `tests/`, `pages/`, `utils/` | Follow the rule message |
+| Naming | all linted files | File names in `tests/` and `src/` use PascalCase (`LoginPage.js`, `SearchFlow.spec.js`), identifiers use camelCase, classes use PascalCase |
+| Playwright best practice (`no-element-handle`, `no-force-option`, `no-conditional-in-test`, `prefer-web-first-assertions`, `missing-playwright-await`) | `tests/`, `src/` | Follow the rule message |
 
 ## Procedure
 
@@ -29,6 +29,6 @@ Runs the suite quality gates and fixes the findings. The rules live in `eslint.c
 
 ## Rules for fixing
 
-- Do not disable a rule with `eslint-disable` to make an error go away. If a rule is wrong for a real case, tell the user and propose a change to `eslint.config.mjs`.
+- Do not disable a rule with `eslint-disable` to make an error go away. If a rule is wrong for a real case, tell the user and propose a change to `quality-gate/eslint.config.mjs`.
 - Do not put real credentials in `.env.example`.
 - Lint is also enforced by the pre-push hook, so a failing lint blocks the push.

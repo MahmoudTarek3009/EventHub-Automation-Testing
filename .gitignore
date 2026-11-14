@@ -4,11 +4,9 @@ node_modules/
 # Environment
 .env
 
-# Playwright output (folders are tracked via .gitkeep, contents are not)
-/test-results/*
-!/test-results/.gitkeep
-/playwright-report/*
-!/playwright-report/.gitkeep
+# Playwright output (reports/ is tracked via .gitkeep, contents are not)
+/reports/*
+!/reports/.gitkeep
 /blob-report/
 
 # Per-test run output (only .gitkeep may be tracked)

@@ -2,7 +2,7 @@
 // Usage:
 //   node locator-tool.js snapshot <url> [--wait <ms>] [--timeout <ms>]
 //   node locator-tool.js check <url> "<locator expression using page>" [--wait <ms>] [--timeout <ms>]
-const { chromium } = require('@playwright/test');
+import { chromium } from '@playwright/test';
 
 function parseArgs(argv) {
   const args = [];
