@@ -20,6 +20,17 @@ Playwright (JavaScript) UI and API tests.
 | 12 | AC4 | Cancel permanently deletes the booking. The docs list a `cancelled` status that never appears. | Should a cancelled booking be kept and shown with the status "cancelled", or is deleting it intended? |
 | 13 | AC5 | Authentication, request fields and error codes not stated. The docs show the endpoints as public, but they return 401 without a token. | Is a token required? Should the API apply the same rules as the UI (limits, validation, price)? Which error codes and messages are expected? |
 
+## Test cases
+
+The test cases are in [docs/TestCases.md](docs/TestCases.md): 7 API, 2 UI and 1 end-to-end.
+
+## Assumptions
+
+- Unclear rules follow the app's current behaviour.
+- Each user's seats and bookings are isolated.
+- World Tech Summit keeps its 8 seats.
+- Past-dated seeded events remain bookable during testing.
+
 ## Project Structure
 
 ```
