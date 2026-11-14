@@ -1,5 +1,7 @@
 import { test as base, expect } from '@playwright/test';
 import { PoManager } from '../pages/PoManager.js';
+import { ApiManager } from '../utils/api/ApiManager.js';
+import { AuthApi } from '../utils/api/AuthApi.js';
 import { buildCredentials } from '../utils/DataBuilder.js';
 
 export { expect };
@@ -38,5 +40,43 @@ export const test = base.extend({
     await myBookingsPage.goTo();
     await myBookingsPage.clearAllBookings();
     await context.close();
+  },
+
+  // One user per worker, registered through the API. Holds the credentials and the token.
+  apiUser: [
+    async ({ playwright }, use, workerInfo) => {
+      const request = await playwright.request.newContext({ baseURL: workerInfo.project.use.baseURL });
+      const credentials = buildCredentials();
+
+      const response = await new AuthApi(request).register(credentials.email, credentials.password);
+      if (!response.ok()) {
+        throw new Error(`The framework user could not be registered. The API answered ${response.status()}.`);
+      }
+      const body = await response.json();
+
+      await request.dispose();
+      await use({ ...credentials, token: body.token });
+    },
+    { scope: 'worker', timeout: 60 * 1000 },
+  ],
+
+  // API objects that send the user's token on every request. Tests that need a user ask for this fixture and never handle a token.
+  api: async ({ playwright, baseURL, apiUser }, use) => {
+    const request = await playwright.request.newContext({
+      baseURL,
+      extraHTTPHeaders: { Authorization: `Bearer ${apiUser.token}` },
+    });
+    const apiManager = new ApiManager(request);
+
+    await use(apiManager);
+
+    // Tear down: cancel the bookings the test left behind so the seats are released for the next test.
+    await apiManager.getBookingsApi().cancelAll();
+    await request.dispose();
+  },
+
+  // API objects with no token, for the register, login and missing-token tests.
+  anonymousApi: async ({ request }, use) => {
+    await use(new ApiManager(request));
   },
 });
