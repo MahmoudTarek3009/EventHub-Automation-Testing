@@ -57,6 +57,12 @@ export default defineConfig({
       use: { baseURL: apiUrl },
     },
 
+    {
+      name: 'e2e-ui',
+      testDir: './tests/e2e/ui',
+      use: { ...devices['Desktop Chrome'], baseURL: baseUrl },
+    },
+
     // {
     //   name: 'firefox',
     //   use: { ...devices['Desktop Firefox'] },
