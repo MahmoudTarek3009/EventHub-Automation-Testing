@@ -22,7 +22,7 @@ Playwright (JavaScript) UI and API tests.
 
 ## Test cases
 
-The test cases are in [docs/TestCases.md](docs/TestCases.md): 7 API, 2 UI and 1 end-to-end.
+The test cases are in [docs/TestCases.md](docs/TestCases.md): 14 API, 14 UI and 2 end-to-end.
 
 ## Assumptions
 
