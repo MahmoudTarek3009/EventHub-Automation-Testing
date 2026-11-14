@@ -76,13 +76,13 @@ The two end-to-end tests are the exception. Each is one journey by design.
 | ID | AC | Scenario and technique | P | Steps | Expected |
 |---|---|---|---|---|---|
 | E2E-01 | AC1 to AC4 | **UI flow: book, view, cancel**<br>Technique: end-to-end scenario testing (happy path) | P1 | • Open Hollywood Monsoon Night and book 2 tickets<br>• Open **My Bookings**<br>• Cancel the booking | • The confirmation shows a reference and `$5,000`<br>• A card with the same reference and `$5,000`<br>• The card disappears and `No bookings yet` shows |
-| E2E-02 | AC1 to AC5 | **API flow: register, log in, book, list, cancel**<br>Technique: end-to-end scenario testing (happy path) | P1 | • Register a new user<br>• Log in with the same credentials<br>• Book 2 tickets on World Tech Summit<br>• List bookings<br>• Cancel the booking<br>• Get the booking and the event | • 201 with a token<br>• 200 with a token<br>• 201 `Booking confirmed!` and `totalPrice` 3000<br>• The booking is first in the list<br>• 200 `Booking cancelled`<br>• 404 for the booking and `availableSeats` is 8 |
+| E2E-02 | AC1 to AC5 | **API flow: book, list, cancel**<br>Technique: end-to-end scenario testing (happy path) | P1 | • Book 2 tickets on World Tech Summit<br>• List bookings<br>• Cancel the booking<br>• Get the booking and the event | • 201 `Booking confirmed!` and `totalPrice` 3000<br>• The booking is first in the list<br>• 200 `Booking cancelled`<br>• 404 for the booking and `availableSeats` is 8 |
 
 ## Traceability
 
 | AC | API | UI | E2E |
 |---|---|---|---|
-| Prerequisite (sign-up, sign-in) | API-01 to 04 | UI-01 to 04 | E2E-02 |
+| Prerequisite (sign-up, sign-in) | API-01 to 04 | UI-01 to 04 | |
 | Story (visitor) | | UI-14 | |
 | AC1 | API-05, 07, 08, 09 | UI-05, 07, 08, 09 | E2E-01, 02 |
 | AC2 | API-06 | UI-05, 06 | E2E-01, 02 |
@@ -116,7 +116,7 @@ A framework fixture registers a user and signs in once per worker: through the A
 | UI-12 | Framework user (UI), signed in | Hollywood Monsoon Night | Made through the form | None (the test cancels it) |
 | UI-14 | None. No session. | None | None | None |
 | E2E-01 | Framework user (UI), signed in | Hollywood Monsoon Night | Made through the form | None (the test cancels it) |
-| E2E-02 | New user, registered through the API in the test | World Tech Summit | Made in the test | None (the test cancels it) |
+| E2E-02 | Framework user (API) | World Tech Summit | Made in the test | None (the test cancels it) |
 
 ## Not automated, and why
 
