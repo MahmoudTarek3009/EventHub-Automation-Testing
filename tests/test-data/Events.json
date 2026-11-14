@@ -1,0 +1,12 @@
+{
+  "priceEvent": {
+    "name": "Hollywood Monsoon Night — Los Angeles",
+    "price": 2500
+  },
+  "seatsEvent": {
+    "name": "World Tech Summit",
+    "price": 1500,
+    "seats": 8,
+    "totalSeats": 500
+  }
+}

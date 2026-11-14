@@ -1,13 +1,16 @@
 // @ts-check
+import { existsSync } from 'node:fs';
 import { defineConfig, devices } from '@playwright/test';
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+// Playwright does not read .env itself. A value set there overrides the default below.
+if (existsSync('.env')) {
+  process.loadEnvFile('.env');
+}
+
+const baseUrl = process.env.BASE_URL || 'https://eventhub.rahulshettyacademy.com';
+
+// The API has its own host and a /api path. The trailing slash keeps /api when a test calls a relative path such as `bookings`.
+const apiUrl = (process.env.API_URL || 'https://api.eventhub.rahulshettyacademy.com/api').replace(/\/?$/, '/');
 
 /**
  * @see https://playwright.dev/docs/test-configuration
@@ -15,6 +18,11 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests',
   outputDir: './reports/test-results',
+  /* The app is slow on a shared server, so tests get a generous timeout. */
+  timeout: 40 * 1000,
+  expect: {
+    timeout: 15 * 1000,
+  },
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -27,29 +35,37 @@ export default defineConfig({
   reporter: [['html', { outputFolder: 'reports/html' }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('')`. */
-    // baseURL: 'http://localhost:3000',
+    screenshot: 'only-on-failure',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
 
-  /* Configure projects for major browsers */
+  /* The UI and the API run on different hosts, so each project has its own base URL. */
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'ui',
+      testDir: './tests/ui',
+      /* Tests use relative paths such as `page.goto('/login')`. Set BASE_URL in .env to change the environment. */
+      use: { ...devices['Desktop Chrome'], baseURL: baseUrl },
     },
 
     {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      name: 'api',
+      testDir: './tests/api',
+      /* Tests use paths without a leading slash such as `request.get('bookings')`, so /api is kept. */
+      use: { baseURL: apiUrl },
     },
 
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
+    // {
+    //   name: 'firefox',
+    //   use: { ...devices['Desktop Firefox'] },
+    // },
+
+    // {
+    //   name: 'webkit',
+    //   use: { ...devices['Desktop Safari'] },
+    // },
 
     /* Test against mobile viewports. */
     // {
