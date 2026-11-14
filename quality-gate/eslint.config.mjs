@@ -45,7 +45,7 @@ const noRawLocatorsInTests = [
     selector:
       "CallExpression[callee.type='MemberExpression'][callee.property.name=/^(locator|frameLocator|getBy[A-Za-z]+)$/]",
     message:
-      'Raw locator in a test script. Add it to a page object in pages/ and call that action or property.',
+      'Raw locator in a test script. Add it to a page object in src/pages/ and call that action or property.',
   },
 ];
 
@@ -64,7 +64,7 @@ const filenameCase = (files, kind) => ({
 
 export default [
   {
-    ignores: ['node_modules/**', 'playwright-report/**', 'test-results/**', 'blob-report/**'],
+    ignores: ['node_modules/**', 'reports/**', 'blob-report/**'],
   },
   js.configs.recommended,
   {
@@ -81,10 +81,10 @@ export default [
   },
   {
     ...playwright.configs['flat/recommended'],
-    files: ['tests/**/*.js', 'pages/**/*.js', 'utils/**/*.js'],
+    files: ['tests/**/*.js', 'src/**/*.js'],
   },
   {
-    files: ['tests/**/*.js', 'pages/**/*.js', 'utils/**/*.js'],
+    files: ['tests/**/*.js', 'src/**/*.js'],
     rules: {
       'playwright/no-wait-for-timeout': 'error',
       'playwright/no-element-handle': 'error',
@@ -100,5 +100,5 @@ export default [
       'no-restricted-syntax': ['error', ...sharedRestrictions, ...noRawLocatorsInTests],
     },
   },
-  filenameCase(['tests/**/*.js', 'pages/**/*.js', 'utils/**/*.js'], 'pascalCase'),
+  filenameCase(['tests/**/*.js', 'src/**/*.js'], 'pascalCase'),
 ];

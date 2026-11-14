@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 // Blocks commits and pushes that contain run output or secrets.
-//   node scripts/check-artifacts.js            checks everything tracked or staged
-//   node scripts/check-artifacts.js --pushed   checks the commits being pushed (reads git pre-push stdin)
-const { execFileSync } = require('node:child_process');
+//   node quality-gate/scripts/CheckArtifacts.js            checks everything tracked or staged
+//   node quality-gate/scripts/CheckArtifacts.js --pushed   checks the commits being pushed (reads git pre-push stdin)
+import { execFileSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 
 const ZERO_SHA = /^0+$/;
 
@@ -20,7 +21,7 @@ function reasonToBlock(filePath) {
   const name = parts[parts.length - 1];
   const folders = parts.slice(0, -1);
   if (name === '.gitkeep') return null;
-  if (folders.includes('test-results') || folders.includes('playwright-report')) {
+  if (parts[0] === 'reports') {
     return 'Playwright run output';
   }
   if (parts[0] === 'tests' && folders.includes('output')) return 'test output folder';
@@ -47,7 +48,7 @@ function pushedFiles(stdin) {
 
 function readStdin() {
   try {
-    return require('node:fs').readFileSync(0, 'utf8');
+    return readFileSync(0, 'utf8');
   } catch {
     return '';
   }
@@ -61,7 +62,7 @@ const blocked = files
 if (blocked.length > 0) {
   console.error('Blocked: these files must not be committed or pushed:');
   for (const { file, reason } of blocked) console.error(`  ${file}  (${reason})`);
-  console.error('\nOnly .gitkeep may live in test-results/, playwright-report/ and tests/**/output/.');
+  console.error('\nOnly .gitkeep may live in reports/ and tests/**/output/.');
   console.error('Fix: git rm --cached <file>   (and keep the path in .gitignore)');
   process.exit(1);
 }

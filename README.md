@@ -40,20 +40,22 @@ EventHub-Automation-Testing/
 │   ├── skills/               Copilot skills (locator-finder, test-linter)
 │   ├── agents/               Copilot agents (push-agent)
 │   └── copilot-instructions.md  Rules Copilot follows
-├── .husky/                  Git hooks (commit and push checks)
 ├── docs/                    Assessment documents
-├── scripts/                 Repo tooling (artifact check)
+├── quality-gate/
+│   ├── eslint.config.mjs    Lint rules
+│   ├── husky/               Git hooks (commit and push checks)
+│   └── scripts/             Repo tooling (artifact check)
+├── src/
+│   ├── pages/               Page Object classes
+│   ├── fixtures/            Playwright fixtures (page objects, API clients)
+│   └── utils/               Shared helpers
 ├── tests/
 │   ├── ui/                  UI tests
 │   ├── api/                 API tests
-│   └── e2e/                 End-to-end user journeys
-├── pages/                   Page Object classes
-├── utils/                   Shared helpers
-├── test-data/               Static test inputs
-├── playwright-report/       Generated HTML report (not tracked)
-├── test-results/            Generated test artifacts (not tracked)
+│   ├── e2e/                 End-to-end user journeys
+│   └── test-data/           Static test inputs
+├── reports/                 Generated test results and HTML report (not tracked)
 ├── .env.example             Template for environment variables
-├── eslint.config.mjs        Lint rules
 └── playwright.config.js     Playwright configuration
 ```
 
@@ -82,7 +84,7 @@ cp .env.example .env
 
 ## Rules
 
-- Tests have no locators. Locators live in `pages/`.
+- Tests have no locators. Locators live in `src/pages/`.
 - No fixed waits. No hard-coded credentials.
 - File names use PascalCase, for example `LoginPage.js`.
 - Secrets come from `.env`.
@@ -92,4 +94,4 @@ cp .env.example .env
 - Work on a branch like `feat/login-page-object`. Never push to `main`.
 - Commit messages use Conventional Commits, for example `feat(login): add sign in action`.
 - Hooks check this on commit and on push. Do not skip them.
-- Files in `test-results/` and `playwright-report/` are never committed.
+- Files in `reports/` are never committed.

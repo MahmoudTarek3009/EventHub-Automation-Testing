@@ -1,0 +1,2 @@
+node quality-gate/scripts/CheckArtifacts.js --pushed || exit 1
+npm run lint

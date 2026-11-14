@@ -7,26 +7,27 @@ Playwright (JavaScript, `@playwright/test`) UI and API test suite. Follow these 
 | Folder | Purpose |
 |---|---|
 | `tests/` | Test scripts only: readable steps, no locators, no Playwright plumbing. Sub-folders `ui/`, `api/`, `e2e/` |
-| `pages/` | Page objects: locators and user actions (`signIn`, `search`). Locators live only here |
-| `utils/` | Shared helpers (data builders, API clients, env access) |
-| `test-data/` | Static test data files |
-| `scripts/` | Repo tooling, not tests |
+| `tests/test-data/` | Static test data files |
+| `src/pages/` | Page objects: locators and user actions (`signIn`, `search`). Locators live only here |
+| `src/fixtures/` | Playwright fixtures that provide page objects and API clients to tests |
+| `src/utils/` | Shared helpers (data builders, API clients, env access) |
+| `quality-gate/` | Repo tooling, not tests: `eslint.config.mjs`, git hooks in `husky/`, checks in `scripts/` |
 
 ## Test scripts (`tests/`)
 
 - A test reads like a manual test case: call page object actions and assert on page object properties. A non-technical reader should understand it.
-- Never use `page.locator`, `page.getBy*` or `frameLocator` in a test. Add the locator to a page object in `pages/` and call that.
+- Never use `page.locator`, `page.getBy*` or `frameLocator` in a test. Add the locator to a page object in `src/pages/` and call that.
 - Keep each test small and independent. A test must not depend on another test's state or order.
 - One behaviour per test. Name it for the behaviour, for example `shows an error for a wrong password`.
 - Group related tests with `test.describe`. Use `test.beforeEach` for shared setup.
 - Do not use `test.only`, `test.skip` without a linked reason, or conditional logic (`if`) inside a test.
 
-## Page objects (`pages/`)
+## Page objects (`src/pages/`)
 
 - One class per page or component, for example `LoginPage`. The constructor takes `page` and defines locators as properties.
 - Expose user-level actions (`signIn(username, password)`), not raw clicks. Actions return nothing or the next page object.
 - Do not put assertions about test intent in page objects. Small readiness checks are fine.
-- Before adding a locator, check for an existing one in `pages/`.
+- Before adding a locator, check for an existing one in `src/pages/`.
 
 ## Locators
 
@@ -57,7 +58,7 @@ Never use XPath, index-based selectors (`nth`, `first`, `last`) unless order is 
 
 ## Naming
 
-- File names in `tests/`, `pages/` and `utils/` use PascalCase: `LoginPage.js`, `SearchFlow.spec.js`.
+- File names in `tests/` and `src/` use PascalCase: `LoginPage.js`, `SearchFlow.spec.js`.
 - Variables and functions use camelCase. Classes use PascalCase. Environment variables use UPPER_SNAKE_CASE.
 - Test titles are plain sentences that describe the behaviour.
 
@@ -72,7 +73,7 @@ Never use XPath, index-based selectors (`nth`, `first`, `last`) unless order is 
 - Use the `push-agent` agent for commit, push and PR work.
 - Never push to `main` or `master`. Use a branch named `<type>/<topic>`, for example `feat/login-page-object`.
 - Commit messages follow Conventional Commits: `<type>(<scope>): <subject>`. Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`. Lower-case, imperative, no trailing period, header up to 100 characters.
-- Never commit anything inside `test-results/`, `playwright-report/` or `tests/**/output/`. Only `.gitkeep` may be tracked there. Never commit `.env` files.
+- Never commit anything inside `reports/` or `tests/**/output/`. Only `.gitkeep` may be tracked there. Never commit `.env` files.
 - Never bypass hooks with `--no-verify`, and never force-push.
 
 ## Skills to use
