@@ -11,6 +11,7 @@ export class EventsPage {
     await this.page.goto('/events');
   }
 
+  /** @param {string} title */
   async openEvent(title) {
     await this.page.getByRole('link', { name: title, exact: true }).click();
   }

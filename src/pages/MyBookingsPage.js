@@ -15,24 +15,35 @@ export class MyBookingsPage {
     await this.page.goto('/bookings');
   }
 
+  /** @param {string} reference */
   bookingCard(reference) {
     return this.page.getByTestId('booking-card').filter({ hasText: reference });
   }
 
   // The card shows the count with an icon in front, for example "🎫 2 tickets".
+  /**
+   * @param {string} reference
+   * @param {number} quantity
+   */
   ticketsInCard(reference, quantity) {
     const noun = quantity === 1 ? 'ticket' : 'tickets';
     return this.bookingCard(reference).getByText(`${quantity} ${noun}`);
   }
 
+  /**
+   * @param {string} reference
+   * @param {number} amount
+   */
   totalInCard(reference, amount) {
     return this.bookingCard(reference).getByText(`$${amount.toLocaleString('en-US')}`, { exact: true });
   }
 
+  /** @param {string} reference */
   async openDetails(reference) {
     await this.bookingCard(reference).getByRole('link', { name: 'View Details' }).click();
   }
 
+  /** @param {string} reference */
   async openCancelDialog(reference) {
     await this.bookingCard(reference).getByRole('button', { name: 'Cancel Booking' }).click();
   }
@@ -41,6 +52,7 @@ export class MyBookingsPage {
     await this.confirmCancelButton.click();
   }
 
+  /** @param {string} reference */
   async cancelBooking(reference) {
     await this.openCancelDialog(reference);
     await this.confirmCancel();

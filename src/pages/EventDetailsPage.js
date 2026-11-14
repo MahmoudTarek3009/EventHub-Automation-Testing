@@ -22,12 +22,14 @@ export class EventDetailsPage {
     this.viewMyBookingsButton = page.getByRole('button', { name: 'View My Bookings' });
   }
 
+  /** @param {number} times */
   async increaseTickets(times) {
     for (let i = 0; i < times; i++) {
       await this.increaseButton.click();
     }
   }
 
+  /** @param {{ name: string, email: string, phone: string }} customer */
   async fillCustomerDetails(customer) {
     await this.nameInput.fill(customer.name);
     await this.emailInput.fill(customer.email);
@@ -38,6 +40,7 @@ export class EventDetailsPage {
     await this.confirmBookingButton.click();
   }
 
+  /** @param {{ name: string, email: string, phone: string }} customer */
   async bookTickets(customer) {
     await this.fillCustomerDetails(customer);
     await this.confirmBooking();
@@ -57,20 +60,27 @@ export class EventDetailsPage {
   }
 
   // The price summary line, for example "$2,500 × 3 tickets".
+  /**
+   * @param {number} price
+   * @param {number} quantity
+   */
   ticketLine(price, quantity) {
     const noun = quantity === 1 ? 'ticket' : 'tickets';
     return this.page.getByText(`$${price.toLocaleString('en-US')} × ${quantity} ${noun}`, { exact: true });
   }
 
   // The same price can also show as the price per ticket and the subtotal, so the Total is the last one on the page.
+  /** @param {number} amount */
   total(amount) {
     return this.page.getByText(`$${amount.toLocaleString('en-US')}`, { exact: true }).last();
   }
 
+  /** @param {string} name */
   confirmationCustomer(name) {
     return this.page.getByText(name, { exact: true });
   }
 
+  /** @param {number} quantity */
   confirmationTickets(quantity) {
     return this.page.getByText(String(quantity), { exact: true });
   }

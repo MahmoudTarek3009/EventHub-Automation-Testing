@@ -16,6 +16,10 @@ export class RegisterPage {
     await this.page.goto('/register');
   }
 
+  /**
+   * @param {string} email
+   * @param {string} password
+   */
   async register(email, password) {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
